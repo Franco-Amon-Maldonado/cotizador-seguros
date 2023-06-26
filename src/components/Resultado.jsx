@@ -1,3 +1,4 @@
+import { useCallback, useRef } from "react";
 import { useCotizador } from "../hooks/useCotizador";
 import {MARCAS, PLANES } from "../constants"
 
@@ -7,9 +8,12 @@ function Resultado() {
     const { resultado, datos } = useCotizador()
     const { marca, plan, year} = datos
 
-    const [nombreMarca] = MARCAS.filter(m => m.id === Number(marca))
-    const [nombrePlan] = PLANES.filter(p => p.id === Number(plan))
+    //Evito el re render
+    const [nombreMarca] = useCallback(MARCAS.filter(m => m.id === Number(marca)),[resultado])
+    const [nombrePlan] = useCallback(PLANES.filter(p => p.id === Number(plan)),[resultado])
 
+    //congelo el año
+    const yearCurrent = useRef(year)
 
     if(resultado===0) return null
 
@@ -21,7 +25,7 @@ function Resultado() {
                 <span className="font-bold">Marca: {nombreMarca.nombre}</span>
             </p>
             <p className="my-2">
-                <span className="font-bold">Año del auto: {year}</span>
+                <span className="font-bold">Año del auto: {yearCurrent.current}</span>
             </p>
             <p className="my-2">
                 <span className="font-bold">Plan: {nombrePlan.nombre}</span>
