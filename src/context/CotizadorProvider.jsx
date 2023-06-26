@@ -1,5 +1,5 @@
 import { createContext, useState } from "react"; 
-import { obtenerDiferenciaYear, calcularMarca, calcularPlan } from "../helpers";
+import { obtenerDiferenciaYear, calcularMarca, calcularPlan, formatearDinero } from "../helpers";
 
 const CotizadorContext = createContext()
 
@@ -12,6 +12,8 @@ const CotizadorProvider = ({children})=>{
     })
 
     const [error, setError] = useState('')
+    const [resultado, setResultado] = useState(0)
+    const [spinner, setSpinner] = useState(false)
 
     const handleChangeDatos = (e) => {
         setDatos({
@@ -39,7 +41,17 @@ const CotizadorProvider = ({children})=>{
 
         resultado *= calcularPlan(datos.plan)
 
+        //formatear dinero
+        resultado = formatearDinero(resultado)
 
+        setSpinner(true)
+
+        setTimeout(()=>{
+            setResultado(resultado)
+            setSpinner(false)
+        },3000)
+
+        
     }
 
 
@@ -50,7 +62,9 @@ const CotizadorProvider = ({children})=>{
                 handleChangeDatos,
                 error,
                 setError,
-                cotizarSeguro
+                cotizarSeguro,
+                spinner,
+                resultado
             }}
         >
             {children}
