@@ -1,2 +1,2 @@
 # cotizador-seguros
-## Deploy: https://vercel.com/franco-amon-maldonado/cotizador-seguros
+## Deploy: https://cotizador-seguros-sigma.vercel.app/
